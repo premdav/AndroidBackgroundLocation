@@ -1,0 +1,2 @@
+# React Native Android Background Location
+This repository was created as a learning tool/future reference for triggering a background service when an android phone gets restarted or comes off of airplane mode. In this example, a service for location tracking will get started.
