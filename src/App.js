@@ -28,12 +28,6 @@ export default function App() {
 
   const watchId = useRef(null);
 
-  useEffect(() => {
-    return () => {
-      removeLocationUpdates();
-    };
-  }, [removeLocationUpdates]);
-
   const hasPermissionIOS = async () => {
     const openSetting = () => {
       Linking.openSettings().catch(() => {
@@ -140,7 +134,7 @@ export default function App() {
         console.log(error);
       },
       {
-        accuracy: {
+        accuracy: { 
           android: 'high',
           ios: 'best',
         },
@@ -212,15 +206,6 @@ export default function App() {
     );
   };
 
-  const removeLocationUpdates = useCallback(() => {
-    if (watchId.current !== null) {
-      stopForegroundService();
-      Geolocation.clearWatch(watchId.current);
-      watchId.current = null;
-      setObserving(false);
-    }
-  }, [stopForegroundService]);
-
   const stopForegroundService = useCallback(() => {
     VIForegroundService.stopService().catch((err) => err);
   }, []);
@@ -280,11 +265,6 @@ export default function App() {
               title="Start Observing"
               onPress={getLocationUpdates}
               disabled={observing}
-            />
-            <Button
-              title="Stop Observing"
-              onPress={removeLocationUpdates}
-              disabled={!observing}
             />
           </View>
         </View>
