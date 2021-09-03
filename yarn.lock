@@ -1431,6 +1431,11 @@
     "@typescript-eslint/types" "4.30.0"
     "eslint-visitor-keys" "^2.0.0"
 
+"@voximplant/react-native-foreground-service@^2.0.0":
+  "integrity" "sha512-V7hpxvYVsIvbpJaIlhjl4BUsWEzPYKIIfWZOYm0s93VEBmp548xx8f5hSeVuhaR6NqveibxVNr+J011ej/yc2g=="
+  "resolved" "https://registry.npmjs.org/@voximplant/react-native-foreground-service/-/react-native-foreground-service-2.0.0.tgz"
+  "version" "2.0.0"
+
 "abab@^2.0.3", "abab@^2.0.5":
   "integrity" "sha512-9IK9EadsbHo6jLWIpxpR6pL0sazTXV6+SQv25ZB+F7Bj9mJNaOc4nCRabwd5M/JwmUa8idz6Eci6eKfJryPs6Q=="
   "resolved" "https://registry.npmjs.org/abab/-/abab-2.0.5.tgz"
@@ -5754,7 +5759,7 @@
     "whatwg-fetch" "^3.0.0"
     "ws" "^6.1.4"
 
-"react-native@^0.65.0", "react-native@>=0.63.3", "react-native@>=0.65.0-rc.0 || 0.0.0-*", "react-native@0.65.1":
+"react-native@^0.65.0", "react-native@>= 0.41.2", "react-native@>=0.63.3", "react-native@>=0.65.0-rc.0 || 0.0.0-*", "react-native@0.65.1":
   "integrity" "sha512-0UOVSnlssweQZjuaUtzViCifE/4tXm8oRbxwakopc8GavPu9vLulde145GOw6QVYiOy4iL50f+2XXRdX9NmMeQ=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.65.1.tgz"
   "version" "0.65.1"

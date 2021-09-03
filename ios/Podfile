@@ -12,6 +12,8 @@ target 'AndroidBackgroundLocation' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
   target 'AndroidBackgroundLocationTests' do
     inherit! :complete
     # Pods for testing
