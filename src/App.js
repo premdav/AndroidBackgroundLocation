@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  AppRegistry,
   Alert,
   Button,
   Linking,
@@ -17,13 +18,37 @@ import Geolocation from 'react-native-geolocation-service';
 import VIForegroundService from '@voximplant/react-native-foreground-service';
 import appConfig from '../app.json';
 
+const startForegroundService = async () => {
+  console.log('STARTING FOREGROUND SERVICE UP');
+  if (Platform.Version >= 26) {
+    await VIForegroundService.createNotificationChannel({
+      id: 'locationChannel',
+      name: 'Location Tracking Channel',
+      description: 'Tracks location of user',
+      enableVibration: false,
+      importance: 5,
+    });
+  }
+
+  return VIForegroundService.startService({
+    channelId: 'locationChannel',
+    id: 420,
+    title: appConfig.displayName,
+    text: 'Tracking location updates',
+    icon: 'ic_launcher',
+    priority: 2,
+  });
+};
+
+AppRegistry.registerHeadlessTask('LogLocation', () => startForegroundService);
+
 export default function App() {
   const [forceLocation, setForceLocation] = useState(true);
   const [highAccuracy, setHighAccuracy] = useState(true);
   const [locationDialog, setLocationDialog] = useState(true);
   const [significantChanges, setSignificantChanges] = useState(false);
-  const [observing, setObserving] = useState(false);
-  const [foregroundService, setForegroundService] = useState(false);
+  const [observing, setObserving] = useState(true);
+  const [foregroundService, setForegroundService] = useState(true);
   const [location, setLocation] = useState(null);
 
   const watchId = useRef(null);
@@ -148,27 +173,6 @@ export default function App() {
     );
   };
 
-  const startForegroundService = async () => {
-    if (Platform.Version >= 26) {
-      await VIForegroundService.createNotificationChannel({
-        id: 'locationChannel',
-        name: 'Location Tracking Channel',
-        description: 'Tracks location of user',
-        enableVibration: false,
-        importance: 5,
-      });
-    }
-
-    return VIForegroundService.startService({
-      channelId: 'locationChannel',
-      id: 420,
-      title: appConfig.displayName,
-      text: 'Tracking location updates',
-      icon: 'ic_launcher',
-      priority: 2,
-    });
-  };
-
   const getLocationUpdates = async () => {
     const hasPermission = await hasLocationPermission();
 
@@ -206,9 +210,9 @@ export default function App() {
     );
   };
 
-  const stopForegroundService = useCallback(() => {
-    VIForegroundService.stopService().catch((err) => err);
-  }, []);
+  useEffect(() => {
+    if (observing) getLocationUpdates();
+  }, [observing])
 
   return (
     <View style={styles.mainContainer}>
@@ -248,13 +252,13 @@ export default function App() {
                   value={forceLocation}
                 />
               </View>
-              <View style={styles.option}>
+              {/* <View style={styles.option}>
                 <Text>Enable Foreground Service</Text>
                 <Switch
                   onValueChange={setForegroundService}
                   value={foregroundService}
                 />
-              </View>
+              </View> */}
             </>
           )}
         </View>
