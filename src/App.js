@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  AppRegistry,
   Alert,
   Button,
   Linking,
@@ -39,8 +38,6 @@ const startForegroundService = async () => {
     priority: 2,
   });
 };
-
-AppRegistry.registerHeadlessTask('LogLocation', () => startForegroundService);
 
 export default function App() {
   const [forceLocation, setForceLocation] = useState(true);
