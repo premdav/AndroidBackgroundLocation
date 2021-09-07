@@ -18,11 +18,13 @@
       <service android:name="com.voximplant.foregroundservice.VIForegroundService"> </service>
       <service android:name="com.androidbackgroundlocation.service.LocationService" />
        <receiver
-            android:name="com.rnheartbeat.BootUpReceiver"
+            android:name=".StartAppOnBoot"
             android:enabled="true"
+            android:exported="true"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
@@ -37,5 +39,8 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
+      <service android:name="com.facbook.react.devsupport.DevSettingsActivity" />
+      <service android:name=".BackgroundService" />
+      <service android:name=".HeadlessBackgroundService" />
     </application>
 </manifest>

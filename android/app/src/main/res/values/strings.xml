@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">AndroidBackgroundLocation</string>
+    <string name="channel_id">LO_C1</string>
+    <string name="channel_name">Location-Tracking</string>
+    <string name="channel_description">Location tracking test app</string>
 </resources>

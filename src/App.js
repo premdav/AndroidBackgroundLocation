@@ -11,33 +11,34 @@ import {
   Text,
   ToastAndroid,
   View,
+  NativeModules,
+  TouchableOpacity,
 } from 'react-native';
 import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
-import VIForegroundService from '@voximplant/react-native-foreground-service';
-import appConfig from '../app.json';
+const { BackgroundModule } = NativeModules;
 
-const startForegroundService = async () => {
-  console.log('STARTING FOREGROUND SERVICE UP');
-  if (Platform.Version >= 26) {
-    await VIForegroundService.createNotificationChannel({
-      id: 'locationChannel',
-      name: 'Location Tracking Channel',
-      description: 'Tracks location of user',
-      enableVibration: false,
-      importance: 5,
-    });
-  }
+// const startForegroundService = async () => {
+//   console.log('STARTING FOREGROUND SERVICE UP');
+//   if (Platform.Version >= 26) {
+//     await VIForegroundService.createNotificationChannel({
+//       id: 'locationChannel',
+//       name: 'Location Tracking Channel',
+//       description: 'Tracks location of user',
+//       enableVibration: false,
+//       importance: 5,
+//     });
+//   }
 
-  return VIForegroundService.startService({
-    channelId: 'locationChannel',
-    id: 420,
-    title: appConfig.displayName,
-    text: 'Tracking location updates',
-    icon: 'ic_launcher',
-    priority: 2,
-  });
-};
+//   return VIForegroundService.startService({
+//     channelId: 'locationChannel',
+//     id: 420,
+//     title: appConfig.displayName,
+//     text: 'Tracking location updates',
+//     icon: 'ic_launcher',
+//     priority: 2,
+//   });
+// };
 
 export default function App() {
   const [forceLocation, setForceLocation] = useState(true);
@@ -170,46 +171,46 @@ export default function App() {
     );
   };
 
-  const getLocationUpdates = async () => {
-    const hasPermission = await hasLocationPermission();
+  // const getLocationUpdates = async () => {
+  //   const hasPermission = await hasLocationPermission();
 
-    if (!hasPermission) {
-      return;
-    }
+  //   if (!hasPermission) {
+  //     return;
+  //   }
 
-    if (Platform.OS === 'android' && foregroundService) {
-      await startForegroundService();
-    }
+  //   // if (Platform.OS === 'android' && foregroundService) {
+  //   //   await startForegroundService();
+  //   // }
 
-    setObserving(true);
+  //   setObserving(true);
 
-    watchId.current = Geolocation.watchPosition(
-      (position) => {
-        setLocation(position);
-        console.log(position);
-      },
-      (error) => {
-        setLocation(null);
-        console.log(error);
-      },
-      {
-        accuracy: {
-          android: 'high',
-          ios: 'best',
-        },
-        enableHighAccuracy: true,
-        distanceFilter: 0,
-        interval: 7500,
-        fastestInterval: 5000,
-        forceRequestLocation: true,
-        useSignificantChanges: false,
-      },
-    );
-  };
+  //   watchId.current = Geolocation.watchPosition(
+  //     (position) => {
+  //       setLocation(position);
+  //       console.log(position);
+  //     },
+  //     (error) => {
+  //       setLocation(null);
+  //       console.log(error);
+  //     },
+  //     {
+  //       accuracy: {
+  //         android: 'high',
+  //         ios: 'best',
+  //       },
+  //       enableHighAccuracy: true,
+  //       distanceFilter: 0,
+  //       interval: 7500,
+  //       fastestInterval: 5000,
+  //       forceRequestLocation: true,
+  //       useSignificantChanges: false,
+  //     },
+  //   );
+  // };
 
-  useEffect(() => {
-    if (observing) getLocationUpdates();
-  }, [observing])
+  // useEffect(() => {
+  //   if (observing) getLocationUpdates();
+  // }, [observing])
 
   return (
     <View style={styles.mainContainer}>
@@ -243,23 +244,42 @@ export default function App() {
                 />
               </View>
               <View style={styles.option}>
-                <Text>Force Location Request</Text>
+                <Text>force location update</Text>
                 <Switch
                   onValueChange={setForceLocation}
                   value={forceLocation}
                 />
               </View>
-              {/* <View style={styles.option}>
-                <Text>Enable Foreground Service</Text>
-                <Switch
-                  onValueChange={setForegroundService}
-                  value={foregroundService}
-                />
-              </View> */}
+              <View style={styles.option}>
+                <TouchableOpacity
+                style={{
+                  backgroundColor: '#488aff',
+                  padding: 8.5,
+                  margin: 15,
+                  height: 40,
+                  borderColor: 'black',
+                  borderRadius: 5,
+                }
+              }
+                  onPress={() => BackgroundModule.startService()}
+                ><Text>Turn on bg foreground</Text></TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#488aff',
+                    padding: 8.5,
+                    margin: 15,
+                    height: 40,
+                    borderColor: 'black',
+                    borderRadius: 5,
+                  }
+                }
+                  onPress={() => BackgroundModule.stopService()}
+                ><Text>Bg Foreground offfff</Text></TouchableOpacity>
+              </View>
             </>
           )}
         </View>
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <Button title="Get Location" onPress={getLocation} />
           <View style={styles.buttons}>
             <Button
@@ -268,7 +288,7 @@ export default function App() {
               disabled={observing}
             />
           </View>
-        </View>
+        </View> */}
         <View style={styles.result}>
           <Text>Latitude: {location?.coords?.latitude || ''}</Text>
           <Text>Longitude: {location?.coords?.longitude || ''}</Text>
