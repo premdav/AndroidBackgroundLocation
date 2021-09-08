@@ -3,8 +3,8 @@ import App from './src/App';
 import {name as appName} from './app.json';
 
 const jsHeadlessTask = async (data) => {
-  console.log('RN:JS: HEADLESS TASK');
-  console.log('data:', data);
+  console.log('*** HEADLESS LOCATION: DATA ***');
+  console.log(data);
 };
 
 AppRegistry.registerComponent(appName, () => App);

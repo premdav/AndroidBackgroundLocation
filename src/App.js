@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Platform,
   ScrollView,
@@ -13,9 +13,7 @@ const { BackgroundModule } = NativeModules;
 
 export default function App() {
   const [forceLocation, setForceLocation] = useState(true);
-  const [highAccuracy, setHighAccuracy] = useState(true);
   const [locationDialog, setLocationDialog] = useState(true);
-  const [significantChanges, setSignificantChanges] = useState(false);
   const [location, setLocation] = useState(null);
 
   return (
@@ -25,21 +23,6 @@ export default function App() {
         contentContainerStyle={styles.contentContainer}
       >
         <View>
-          <View style={styles.option}>
-            <Text>Enable High Accuracy</Text>
-            <Switch onValueChange={setHighAccuracy} value={highAccuracy} />
-          </View>
-
-          {Platform.OS === 'ios' && (
-            <View style={styles.option}>
-              <Text>Use Significant Changes</Text>
-              <Switch
-                onValueChange={setSignificantChanges}
-                value={significantChanges}
-              />
-            </View>
-          )}
-
           {Platform.OS === 'android' && (
             <>
               <View style={styles.option}>

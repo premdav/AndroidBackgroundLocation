@@ -58,7 +58,6 @@ public class BackgroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         this.handler.post(this.runnableCode); // Starting the interval
-
         NotificationChannel channel;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.channel_name);
@@ -70,7 +69,6 @@ public class BackgroundService extends Service {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         Notification notification = new NotificationCompat.Builder(getApplicationContext(), getString(R.string.channel_id))
@@ -82,8 +80,12 @@ public class BackgroundService extends Service {
 
         int rand = (int)(Math.random() * 10000) + 1000;
         startForeground(rand, notification);
-
         return START_STICKY;
+    }
+    public boolean stopService(Intent intent) {
+        stopForeground(true);
+        stopSelf();
+        return true;
     }
     @Override
     public IBinder onBind(Intent intent) {

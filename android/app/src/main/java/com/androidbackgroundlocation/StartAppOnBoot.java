@@ -7,7 +7,6 @@ public class StartAppOnBoot extends BroadcastReceiver {
    public void onReceive(Context context, Intent intent) {
       System.out.println("RN:In broadcast receiver");
       if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-         System.out.println("RN:Boot completed");
          context.startForegroundService(new Intent(context, BackgroundService.class));
       }
    }

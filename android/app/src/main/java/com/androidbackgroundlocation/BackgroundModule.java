@@ -36,7 +36,7 @@ import android.content.ComponentName;
 
 public class BackgroundModule extends ReactContextBaseJavaModule {
    private static ReactApplicationContext context;
-   public static final String CHANNEL_ID = "V-ALERT BUBBLE";
+   public static final String CHANNEL_ID = "BUBBLE";
    private View layout = null;
    private TextView text = null;
    private int screenWidth = 0;
@@ -45,9 +45,7 @@ public class BackgroundModule extends ReactContextBaseJavaModule {
 
    BackgroundModule(ReactApplicationContext context) {
        super(context);
-       System.out.println("RN:In BackgroundModule() Constructor");
        this.context = context;
-       //this.context.startService(new Intent(this.context, BackgroundService.class));
    }
 
    @ReactMethod
@@ -73,6 +71,7 @@ public class BackgroundModule extends ReactContextBaseJavaModule {
 
    @ReactMethod
    public void stopService() {
+       this.context.stopService(new Intent(this.context, BackgroundService.class));
       PackageManager pm = this.context.getPackageManager();
       ComponentName componentName = new ComponentName(this.context, StartAppOnBoot.class);
       pm.setComponentEnabledSetting(
